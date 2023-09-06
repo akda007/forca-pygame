@@ -29,6 +29,45 @@ def draw_character(_screen, _lives):
     if _lives >= 6:
         char.draw_leftleg()
 
+class GussedChars:
+    char_list: list
+    cord_a: Coordinate
+    cord_b: Coordinate
+    hor_index: int
+    ver_index: int
+    screen: pg.Surface
+
+    char_width = 20
+    hor_spacing = 80
+    ver_spacing = 80
+
+
+    def add_char(self, char):
+        self.char_list.append(char)
+        font = pg.font.Font("freesansbold.ttf", 20)
+        text = font.render(char, True, black, white)
+        charRect = text.get_rect()
+
+        current_x = self.cord_a.X + self.hor_spacing * self.hor_index
+        current_y = self.cord_a.Y + self.ver_spacing * self.ver_index
+
+        if current_x >= self.screen.get_width() - self.hor_spacing:
+            self.hor_index = 0
+            self.ver_index += 1
+            current_x = self.cord_a.X + self.hor_spacing * self.hor_index
+
+        charRect.center = (current_x, current_y)
+
+        self.screen.blit(text, charRect)
+        
+        
+
+    def __init__(self, screen, xa: int, xb: int, ya: int, yb: int):
+        self.screen = screen
+        self.char_list = []
+        self.cord_a = Coordinate(xa, ya)
+        self.cord_b = Coordinate(xb, yb)
+        self.hor_index, self.ver_index = 0, 0
 
 class Word:
     screen: pg.Surface
